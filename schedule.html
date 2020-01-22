@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="class_schedule.js"></script>
+    <style>
+      table  { border-collapse: collapse; font-family: Arial; font-size: 16px;}
+      td, th { border: 2px solid #FFFFFF; padding: 3px 8px;}
+      th     { text-align: left; background: #4F81BD; color: #FFFFFF; }
+      tr:nth-child(even) { background: #E5E6E8; }
+      ul li  {list-style-type: none; padding: 5px 0px; }
+    </style>
+</head>
+<body>
+<script>    
+    function buildTable(data) {
+        var table = document.createElement("table");
+        var fields = Object.keys(data[0]); // return array object's property names in order (like loop)
+        var headRow = document.createElement("tr");
+
+        fields.forEach(function(field) {
+          var headCell = document.createElement("th");
+          headCell.textContent = field;
+          headRow.appendChild(headCell);
+        });
+        table.appendChild(headRow);
+
+        data.forEach(function(object) {
+          var row = document.createElement("tr");
+
+          fields.forEach(function(field) {
+            var cell = document.createElement("td");
+            if (typeof object[field] == "number"){
+               cell.style.textAlign = "center";
+               cell.style.fontWeight = "bold";
+            }
+            if (object[field] instanceof Array){
+               cell.style.width = '700px';
+           var ul = document.createElement('ul');
+               cell.appendChild(ul);
+               var topicItem = object[field];
+
+               topicItem.forEach(function(topicItem){
+                 var li = document.createElement('li');
+                 ul.appendChild(li);
+                 li.innerHTML += topicItem;
+               });
+             }
+            else
+               cell.textContent = object[field];
+
+         row.appendChild(cell);
+          });
+         table.appendChild(row);
+        });
+         return table;
+  }
+
+  document.body.appendChild(buildTable(CLASS_SCHEDULE));
+  
+  var headerFormat = document.querySelectorAll("th"); 
+  headerFormat[2].textContent = "Chapters / Topics [Eloquent JavaScript 2nd Edition]";
+
+  var editLi =  document.querySelectorAll("li"); 
+  for (var i = 0; i < editLi.length; i++) {
+     if (editLi[i].textContent.includes("due"))
+        editLi[i].style.textTransform = "capitalize";
+     if (editLi[i].textContent.includes("Assignment")) // or use indexOf("Assignment") != -1
+  	editLi[i].style.color = "#123C93";
+     if (editLi[i].textContent.includes("Test"))
+  	editLi[i].style.color = "red";
+  } 
+</script>
+</body>
+</html>
